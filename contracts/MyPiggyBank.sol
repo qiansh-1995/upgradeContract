@@ -6,11 +6,10 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "./MyToken.sol";
 
-library SafeMath {}
+
 
 contract MyPiggyBank is Initializable, UUPSUpgradeable, OwnableUpgradeable {
-    MyToken public tokenContract;
-    address payable public _owner;
+    MyToken private _token;
     mapping(address => uint256) public accountBalances; //cruuency : MMM
     uint public bankBalances;
     function initialize() public initializer {
@@ -21,32 +20,30 @@ contract MyPiggyBank is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
 
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {
-        _owner = payable(msg.sender);
+    constructor() initializer  {
+        
     }
 
     //v1 customer save money
-    function save(uint _amount) public payable {
+    function save(uint _amount) public{
         require(_amount > 0, "amount must >0");
         require(
-            type(uint).max - _amount > accountBalances[msg.sender],
+             _token.transferFrom(msg.sender, address(this), _amount),
             "Excessive amount"
         );
-
-        tokenContract.transferFrom(msg.sender, _owner, _amount); //transfer private token
         accountBalances[msg.sender] += _amount;
         bankBalances += _amount;
     }
 
-    function withdraw(uint _amount) public payable {
+    function withdraw(uint _amount) public {
         require(
             accountBalances[msg.sender] > 0,
             "No permission,please save money"
         );
         require(accountBalances[msg.sender] > _amount, "Insufficient balance");
-
+        require(_token.balanceOf(address(this))>=_amount, "Insufficient balance");
         accountBalances[msg.sender] -= _amount;
-        tokenContract.transferFrom(_owner, msg.sender, _amount);
+        _token.transferFrom(address(this), msg.sender, _amount);
         bankBalances -= _amount;
     }
 
