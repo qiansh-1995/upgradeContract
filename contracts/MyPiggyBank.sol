@@ -20,9 +20,7 @@ contract MyPiggyBank is Initializable, UUPSUpgradeable, OwnableUpgradeable {
 
 
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer  {
-        
-    }
+
 
     //v1 customer save money
     function save(uint _amount) public{
