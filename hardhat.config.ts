@@ -24,7 +24,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     "bscTestnet": {
-      url: "https://bsc-testnet.public.blastapi.io/",
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
       chainId: 97,
       accounts: [PRIVATE_KEY],
       blockGasLimit: 300000,

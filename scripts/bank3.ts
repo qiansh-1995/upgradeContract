@@ -1,41 +1,22 @@
-const { ethers } = require("hardhat");
-const { upgradeProxy } = require("@openzeppelin/truffle-upgrades");
+import { ethers } from "hardhat";
 
 async function main() {
-  // 切换到您部署此合约的网络
-  const networkName = "rinkeby";
-  await hre.network.provider.request({
-    method: "hardhat_reset",
-    params: [
-      {
-        forking: {
-          jsonRpcUrl: `https://${networkName}.infura.io/v3/${process.env.INFURA_API_KEY}`,
-        },
-      },
-    ],
-  });
+  const mytokenAddress="0xae708e26b4529C7c811fb22D6aCf03da8d868B73";
+  const Token = await ethers.getContractFactory("TransTest");
+  const token = await Token.deploy(mytokenAddress);
 
-  const tokenAddress = ""; // 加载已部署的ERC20代币的地址
+  await token.deployed();
 
-  // 部署SavingsContract代理合约
-  const contractFactory = await ethers.getContractFactory("SavingsContract");
-  const savingsContract = await upgradeProxy(
-    "", // 加载已部署的SavingsContract合约的地址
-    contractFactory,
-    { initializer: "initialize", unsafeAllowCustomTypes: true } // 使用自定义参数调用"SavingsContract"合约的"initialize"方法
+  console.log(
+    `Deployed at ${token.address}\n`
+    +
+    `Use "npx hardhat verify  <XXX> --network bscTestnet  --contract "contracts/TransTest.sol:TransTest" " to verify`
   );
-
-  console.log("SavingsContract 地址:", savingsContract.address);
-
-  // 将该地址保存到 JSON 文件中供以后使用
-  const fs = require("fs");
-  const contractAddressJson = { address: savingsContract.address };
-  fs.writeFileSync(
-    `./contracts/${networkName}-SavingsContract.json`,
-    JSON.stringify(contractAddressJson, undefined, 2)
-  );
-
-  // ...其他合约部署或测试代码
 }
 
-main();
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

@@ -1,48 +1,29 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-
 import "./MyToken.sol";
 
-contract MyPiggyBank is Initializable, UUPSUpgradeable, OwnableUpgradeable {
+contract TransTest {
     MyToken public _token;
+    //const start time & end
     mapping(address => uint256) public accountBalances;
     uint public bankBalances;
 
-    function initialize(address _address) public initializer {
-        __Ownable_init();
-        __UUPSUpgradeable_init();
+    mapping(address => uint256) balances; //cruuency : MMM
+
+    constructor(address _address) {
         _token = MyToken(_address);
     }
 
     function save(uint _amount) public {
         require(_amount > 0, "amount must >0");
         require(
-            _token.transfer(address(this), _amount),
+            _token.transferFrom(msg.sender, address(this), _amount),
             "Insufficient amount,please retry again"
         );
         accountBalances[msg.sender] += _amount;
         bankBalances += _amount;
     }
-
-    function save2(uint _amount) public {
-        require(            
-            _token.approve(address(this), _amount),
-            "Insufficient amount,please retry again");
-        require(
-            _token.transfer(address(this), _amount),
-            "Insufficient amount,please retry again"
-        );
-        accountBalances[msg.sender] += _amount;
-        bankBalances += _amount;
-    }
-
-    /// @custom:oz-upgrades-unsafe-allow constructor
-
-
 
     function withdraw(uint _amount) public {
         require(
@@ -56,7 +37,7 @@ contract MyPiggyBank is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         );
         _token.approve(address(this), _amount);
         accountBalances[msg.sender] -= _amount;
-        _token.transferFrom(address(this), msg.sender, _amount);
+        _token.transfer(msg.sender, _amount);
         bankBalances -= _amount;
     }
 
@@ -71,7 +52,4 @@ contract MyPiggyBank is Initializable, UUPSUpgradeable, OwnableUpgradeable {
     function getAddress() public view returns (address) {
         return address(this);
     }
-
-    // 需要此方法来防止未经授权的升级，因为在 UUPS 模式中，升级是从实现合约完成的，而在透明代理模式中，升级是通过代理合约完成的
-    function _authorizeUpgrade(address) internal override onlyOwner {}
 }
