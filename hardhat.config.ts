@@ -16,7 +16,8 @@ const API_KEY = process.env.BSC_TESTNET_API_KEY ? process.env.BSC_TESTNET_API_KE
 
 const config: HardhatUserConfig = {
   solidity: "0.8.17",
-  defaultNetwork: "bscTestnet",
+  defaultNetwork: "localhost",
+ // defaultNetwork: "bscTestnet",
   etherscan: {
     apiKey: {
       bscTestnet: API_KEY
@@ -24,10 +25,10 @@ const config: HardhatUserConfig = {
   },
   networks: {
     "bscTestnet": {
-      url: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+      url: "https://bsc-testnet.public.blastapi.io/",
       chainId: 97,
       accounts: [PRIVATE_KEY],
-      blockGasLimit: 300000,
+      blockGasLimit: 400000,
     }
   }
 };

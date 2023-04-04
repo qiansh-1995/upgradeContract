@@ -1,55 +1,76 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
-
-import "./MyToken.sol";
+interface IERC20 {
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address recipient, uint256 amount) external returns (bool);
+    function allowance(address owner, address spender) external view returns (uint256);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+}
 
 contract TransTest {
-    MyToken public _token;
-    //const start time & end
-    mapping(address => uint256) public accountBalances;
-    uint public bankBalances;
+    address private owner;
+    mapping(address => uint256) private balances;
 
-    mapping(address => uint256) balances; //cruuency : MMM
+    IERC20 private token;
+    address private contractAddress;
 
-    constructor(address _address) {
-        _token = MyToken(_address);
+    constructor(address _token) {
+        owner = msg.sender;
+        token = IERC20(_token);
+        contractAddress = address(this);
     }
 
-    function save(uint _amount) public {
-        require(_amount > 0, "amount must >0");
-        require(
-            _token.transferFrom(msg.sender, address(this), _amount),
-            "Insufficient amount,please retry again"
-        );
-        accountBalances[msg.sender] += _amount;
-        bankBalances += _amount;
+    function deposit(uint256 amount) public {
+        require(token.balanceOf(msg.sender) >= amount, "Balance not enough");
+
+        // 授权合约地址访问指定数量的代币
+        token.approve(contractAddress, amount);
+
+        // 检查授权是否成功
+        require(token.allowance(msg.sender, contractAddress) >= amount, "Allowance not enough");
+
+        // 转账给合约地址
+        token.transferFrom(msg.sender, address(this), amount);
+
+        // 更新余额
+        balances[msg.sender] += amount;
     }
 
-    function withdraw(uint _amount) public {
-        require(
-            accountBalances[msg.sender] > 0,
-            "No permission,please save money"
-        );
-        require(accountBalances[msg.sender] > _amount, "Insufficient balance");
-        require(
-            _token.balanceOf(address(this)) >= _amount,
-            "Insufficient balance"
-        );
-        _token.approve(address(this), _amount);
-        accountBalances[msg.sender] -= _amount;
-        _token.transfer(msg.sender, _amount);
-        bankBalances -= _amount;
+    function withdraw(uint256 amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+
+        // 转账给用户地址
+        token.transfer(msg.sender, amount);
+
+        // 更新余额
+        balances[msg.sender] -= amount;
     }
 
-    function getRealBalance() public view returns (uint256) {
-        return _token.balanceOf(msg.sender);
+    function getBalance() public view returns (uint256) {
+        return balances[msg.sender];
     }
 
-    function getPersonBalance(address _address) public view returns (uint256) {
-        return _token.balanceOf(_address);
+    function authorize(address recipient, uint256 amount) public {
+        // 授权指定地址访问指定数量的代币
+        token.approve(recipient, amount);
     }
 
-    function getAddress() public view returns (address) {
-        return address(this);
+    function transfer(address recipient, uint256 amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+
+        // 转账给接收者地址
+        token.transfer(recipient, amount);
+
+        // 更新余额
+        balances[msg.sender] -= amount;
+    }
+
+    function getAllowance(address owner, address spender) public view returns (uint256) {
+        return token.allowance(owner, spender);
+    }
+
+    function getContractAddress() public view returns (address) {
+        return contractAddress;
     }
 }

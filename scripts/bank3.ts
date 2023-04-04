@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const mytokenAddress="0xae708e26b4529C7c811fb22D6aCf03da8d868B73";
+  const mytokenAddress= "0xae708e26b4529C7c811fb22D6aCf03da8d868B73";//"0xFecd65465747202a04ba3D95982a1e3C9985E5a7"//
   const Token = await ethers.getContractFactory("TransTest");
   const token = await Token.deploy(mytokenAddress);
 
@@ -10,7 +10,7 @@ async function main() {
   console.log(
     `Deployed at ${token.address}\n`
     +
-    `Use "npx hardhat verify  <XXX> --network bscTestnet  --contract "contracts/TransTest.sol:TransTest" " to verify`
+    `Use "npx hardhat verify  <XXX> --network bscTestnet  --contract "contracts/TransTest.sol:TransTest" "0xae708e26b4529C7c811fb22D6aCf03da8d868B73" " to verify`
   );
 }
 

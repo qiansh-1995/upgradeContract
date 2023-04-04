@@ -18,31 +18,14 @@ contract MyPiggyBank is Initializable, UUPSUpgradeable, OwnableUpgradeable {
         _token = MyToken(_address);
     }
 
-    function save(uint _amount) public {
+    function deposit(uint _amount) public {
         require(_amount > 0, "amount must >0");
-        require(
-            _token.transfer(address(this), _amount),
-            "Insufficient amount,please retry again"
-        );
+        require(_token.balanceOf(msg.sender) >= _amount, "Not enough balance.");
+        require(_token.allowance(msg.sender,address(this))>= _amount,"please check approve amount");
+        require(_token.transferFrom(msg.sender, address(this), _amount), "Insufficient amount,please retry again");
         accountBalances[msg.sender] += _amount;
         bankBalances += _amount;
     }
-
-    function save2(uint _amount) public {
-        require(            
-            _token.approve(address(this), _amount),
-            "Insufficient amount,please retry again");
-        require(
-            _token.transfer(address(this), _amount),
-            "Insufficient amount,please retry again"
-        );
-        accountBalances[msg.sender] += _amount;
-        bankBalances += _amount;
-    }
-
-    /// @custom:oz-upgrades-unsafe-allow constructor
-
-
 
     function withdraw(uint _amount) public {
         require(
@@ -54,15 +37,12 @@ contract MyPiggyBank is Initializable, UUPSUpgradeable, OwnableUpgradeable {
             _token.balanceOf(address(this)) >= _amount,
             "Insufficient balance"
         );
-        _token.approve(address(this), _amount);
         accountBalances[msg.sender] -= _amount;
-        _token.transferFrom(address(this), msg.sender, _amount);
+        _token.transfer(msg.sender, _amount);
         bankBalances -= _amount;
     }
 
-    function getRealBalance() public view returns (uint256) {
-        return _token.balanceOf(msg.sender);
-    }
+
 
     function getPersonBalance(address _address) public view returns (uint256) {
         return _token.balanceOf(_address);

@@ -60,6 +60,11 @@
       "address": "0x4A7acc85f3a4b4651e5595B9d871c7559110De00",
       "txHash": "0x6241079855dc98a99f817873fa01d0fd7c6dc92f8da10a6e0da85230eed8b348",
       "kind": "uups"
+    },
+    {
+      "address": "0x981c2cFb58f4a48B3B65f0F8a0a52Ebb4AE2e3C7",
+      "txHash": "0xfe713ff169fd98ae0702af6961fe18d152c903483424b4a35e6364a435a8d946",
+      "kind": "uups"
     }
   ],
   "impls": {
@@ -1409,6 +1414,130 @@
             "numberOfBytes": "1"
           },
           "t_contract(MyToken)2207": {
+            "label": "contract MyToken",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "0a8c69fde630955baa20877e57be1e804e33998e3e505a57958a8749b2809bf3": {
+      "address": "0x47D44F12cbb883b18Fdb6D564731EDA732D06715",
+      "txHash": "0x426232f90f43684a0b2cf6efb25d85f6bd5b9aa8cb00b04c7ef09606ecce19da",
+      "layout": {
+        "solcVersion": "0.8.17",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:67"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\ERC1967\\ERC1967UpgradeUpgradeable.sol:211"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\UUPSUpgradeable.sol:107"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_token",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_contract(MyToken)2191",
+            "contract": "MyPiggyBank",
+            "src": "contracts\\MyPiggyBank.sol:11"
+          },
+          {
+            "label": "accountBalances",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "MyPiggyBank",
+            "src": "contracts\\MyPiggyBank.sol:12"
+          },
+          {
+            "label": "bankBalances",
+            "offset": 0,
+            "slot": "203",
+            "type": "t_uint256",
+            "contract": "MyPiggyBank",
+            "src": "contracts\\MyPiggyBank.sol:13"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(MyToken)2191": {
             "label": "contract MyToken",
             "numberOfBytes": "20"
           },
