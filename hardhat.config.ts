@@ -17,7 +17,7 @@ const API_KEY = process.env.BSC_TESTNET_API_KEY ? process.env.BSC_TESTNET_API_KE
 const config: HardhatUserConfig = {
   solidity: "0.8.17",
   defaultNetwork: "localhost",
- // defaultNetwork: "bscTestnet",
+  //defaultNetwork: "bscTestnet",
   etherscan: {
     apiKey: {
       bscTestnet: API_KEY
