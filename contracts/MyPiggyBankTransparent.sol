@@ -9,9 +9,12 @@ contract MyPiggyBankTransparent is Initializable, OwnableUpgradeable {
     MyToken public _token;
     mapping(address => uint256) public accountBalances;
     uint public bankBalances;
+    
 
     function initialize(address _address) public initializer {
+        __Ownable_init();
         _token = MyToken(_address);
+        
     }
 
     function deposit(uint _amount) public {

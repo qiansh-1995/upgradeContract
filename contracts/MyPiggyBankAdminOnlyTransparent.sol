@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
 import "./MyToken.sol";
 
 contract MyPiggyBankAdminOnlyTransparent is Initializable, OwnableUpgradeable {
@@ -11,6 +11,7 @@ contract MyPiggyBankAdminOnlyTransparent is Initializable, OwnableUpgradeable {
     uint public bankBalances;
 
     function initialize(address _address) public initializer {
+        __Ownable_init();
         _token = MyToken(_address);
     }
 

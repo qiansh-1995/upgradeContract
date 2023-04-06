@@ -48,11 +48,15 @@ describe("Lock", function () {
       console.log(" MyPiggyBankAdminOnlyTransparent address:" + myMyPiggyBankAdminOnlyTransparent.address)
 
       await mtk.approve(myMyPiggyBankAdminOnlyTransparent.address, 5100);
+      console.log(myMyPiggyBankAdminOnlyTransparent.address, " MyPiggyBankAdminOnly address")
 
+      console.log(await upgrades.erc1967.getImplementationAddress(myMyPiggyBankAdminOnlyTransparent.address), " getImplementationAddress")
+      console.log(await upgrades.erc1967.getAdminAddress(myMyPiggyBankAdminOnlyTransparent.address), " getAdminAddress")
+  
       await myMyPiggyBankAdminOnlyTransparent.deposit(5100)
       const getBalanceAgain = await mtk.balanceOf(myMyPiggyBankAdminOnlyTransparent.address);
       console.log(`getBalanceAgain ${getBalanceAgain}  your account :${await myMyPiggyBankAdminOnlyTransparent.accountBalances(owner.address)}`)
-      console.log(`inputaddress:  ${owner.address} contract ownder address :${await myMyPiggyBankAdminOnlyTransparent.owner()}`)
+      console.log(`inputaddress:  ${owner.address} contract ownder address :${await myMyPiggyBankAdminOnlyTransparent.owner()}  ownerAddress: ${ await myMyPiggyBankAdminOnlyTransparent.ownerAddress}`)
     
       await myMyPiggyBankAdminOnlyTransparent.withdraw(5100,owner.address);
       const getBalanceAgain2 = await mtk.balanceOf(myMyPiggyBankAdminOnlyTransparent.address);
